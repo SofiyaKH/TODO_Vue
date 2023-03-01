@@ -24,16 +24,37 @@
       </div>
     </form>
 
-    <div v-for="todo in todos" :key="todo.id" class="card mb-5">
+    <div
+      v-for="todo in todos"
+      :key="todo.id"
+      class="card mb-5"
+      :class="{ 'has-background-success-light': todo.done }"
+    >
       <div class="card-content">
         <div class="content">
           <div
             class="columns is-mobile is-vcentered is-justify-content-space-between"
           >
-            <div class="columm">{{ todo.content }}</div>
+            <div
+              class="columm"
+              :class="{ 'has-text-success line-through': todo.done }"
+            >
+              {{ todo.content }}
+            </div>
             <div class="columm">
-              <button class="button is-light">&check;</button>
-              <button class="button is-danger ml-2">&cross;</button>
+              <button
+                @click="togglerDone(todo.id)"
+                class="button"
+                :class="todo.done ? 'is-success' : 'is-light'"
+              >
+                &check;
+              </button>
+              <button
+                @click="deleteToDo(todo.id)"
+                class="button is-danger ml-2"
+              >
+                &cross;
+              </button>
             </div>
           </div>
         </div>
@@ -50,7 +71,7 @@ import { v4 as uuidv4 } from "uuid";
 //todo
 const todos = ref([
   // { id: "id1", content: "hello", done: false },
-  // { id: "id2", content: "check", done: false },
+  // { id: "id2", content: "check", done: true },
 ]);
 
 // add to do
@@ -66,6 +87,19 @@ const addToDO = () => {
   newToDoContent.value = "";
   console.log("Отправлено", newToDo);
 };
+
+//delete todo
+const deleteToDo = (id) => {
+  todos.value = todos.value.filter((todo) => todo.id !== id);
+  console.log("delete", id);
+};
+
+// toggle done
+const togglerDone = (id) => {
+  const index = todos.value.findIndex((todo) => todo.id == id);
+  console.log(todos.value);
+  todos.value[index].done = !todos.value[index].done;
+};
 </script>
 
 <style>
@@ -75,5 +109,9 @@ const addToDO = () => {
   max-width: 400px;
   padding: 20px;
   margin: 0 auto;
+}
+
+.line-through {
+  text-decoration: line-through;
 }
 </style>
