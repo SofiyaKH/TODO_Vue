@@ -66,8 +66,13 @@
 <script setup>
 //import
 import { ref, onMounted } from "vue";
-import { v4 as uuidv4 } from "uuid";
-import { collection, onSnapshot, addDoc } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  addDoc,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
 import { db } from "@/firebase";
 
 //firestore ref
@@ -75,8 +80,7 @@ const todosCollectionRef = collection(db, "todos");
 
 //todo
 const todos = ref([
-  // { id: "id1", content: "hello", done: false },
-  // { id: "id2", content: "check", done: true },
+
 ]);
 
 // get todos
@@ -109,8 +113,7 @@ const addToDO = () => {
 
 //delete todo
 const deleteToDo = (id) => {
-  todos.value = todos.value.filter((todo) => todo.id !== id);
-  console.log("delete", id);
+  deleteDoc(doc(todosCollectionRef, id));
 };
 
 // toggle done
