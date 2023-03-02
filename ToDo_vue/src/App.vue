@@ -72,6 +72,7 @@ import {
   addDoc,
   doc,
   deleteDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "@/firebase";
 
@@ -79,9 +80,7 @@ import { db } from "@/firebase";
 const todosCollectionRef = collection(db, "todos");
 
 //todo
-const todos = ref([
-
-]);
+const todos = ref([]);
 
 // get todos
 onMounted(() => {
@@ -119,8 +118,10 @@ const deleteToDo = (id) => {
 // toggle done
 const togglerDone = (id) => {
   const index = todos.value.findIndex((todo) => todo.id == id);
-  console.log(todos.value);
-  todos.value[index].done = !todos.value[index].done;
+
+  updateDoc(doc(todosCollectionRef, id), {
+    done: !todos.value[index].done,
+  });
 };
 </script>
 
