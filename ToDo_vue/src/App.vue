@@ -41,7 +41,7 @@
             >
               {{ todo.content }}
             </div>
-            <div class="columm">
+            <div class="columm is-flex">
               <button
                 @click="togglerDone(todo.id)"
                 class="button"
