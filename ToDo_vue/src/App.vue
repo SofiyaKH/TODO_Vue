@@ -65,14 +65,32 @@
 
 <script setup>
 //import
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { v4 as uuidv4 } from "uuid";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/firebase";
 
 //todo
 const todos = ref([
   // { id: "id1", content: "hello", done: false },
   // { id: "id2", content: "check", done: true },
 ]);
+
+// get todos
+onMounted(async () => {
+  const querySnapshot = await getDocs(collection(db, "todos"));
+  let firebaseTodos = [];
+  querySnapshot.forEach((doc) => {
+    console.log(doc.id, " => ", doc.data());
+    const todo = {
+      id: doc.id,
+      content: doc.data().content,
+      done: doc.data().done,
+    };
+    firebaseTodos.push(todo);
+  });
+  todos.value = firebaseTodos;
+});
 
 // add to do
 const newToDoContent = ref("");
