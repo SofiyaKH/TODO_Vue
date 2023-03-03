@@ -108,6 +108,7 @@ const addToDO = () => {
   addDoc(todosCollectionRef, {
     content: newToDoContent.value,
     done: false,
+    date: Date.now(),
   });
 
   newToDoContent.value = "";
