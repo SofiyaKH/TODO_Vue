@@ -73,18 +73,21 @@ import {
   doc,
   deleteDoc,
   updateDoc,
+  query,
+  orderBy,
 } from "firebase/firestore";
 import { db } from "@/firebase";
 
 //firestore ref
 const todosCollectionRef = collection(db, "todos");
+const todosCollectionQuery = query(todosCollectionRef, orderBy("date", "desc"));
 
 //todo
 const todos = ref([]);
 
 // get todos
 onMounted(() => {
-  onSnapshot(todosCollectionRef, (querySnapshot) => {
+  onSnapshot(todosCollectionQuery, (querySnapshot) => {
     const FBtodos = [];
     querySnapshot.forEach((doc) => {
       const todo = {
